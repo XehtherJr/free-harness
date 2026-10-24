@@ -9,6 +9,8 @@ import pytest
 from pydantic import SecretStr, ValidationError
 
 from free_claude_code.application.routing import ModelRouter
+from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
+from free_claude_code.providers.runtime.config import build_provider_config
 from free_claude_code.config import loader
 from free_claude_code.config.constants import (
     ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS,
@@ -41,6 +43,15 @@ from free_claude_code.config.settings import Settings
 
 _SUPER_REF = "nvidia_nim/nvidia/nemotron-3-super-120b-a12b"
 _ULTRA_REF = "nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b"
+
+
+def test_default_ollama_provider_config_does_not_require_nvidia_credentials():
+    settings = compose_settings_snapshot({}, {}).settings
+
+    provider_config = build_provider_config(PROVIDER_CATALOG["ollama"], settings)
+
+    assert provider_config.api_key == "ollama"
+    assert provider_config.base_url == "http://localhost:11434"
 
 
 def test_default_claude_aliases_use_local_model_without_cloud_credentials():
