@@ -15,7 +15,7 @@ from pydantic import (
     field_validator,
 )
 
-from .constants import DEFAULT_MODEL
+from .constants import RETIRED_MODEL_FALLBACK
 from .reasoning import ReasoningPreference
 
 RETIRED_PROVIDER_IDS = frozenset({"github_models"})
@@ -101,7 +101,7 @@ def normalize_retired_model_settings(
     for key in ("MODEL", "MODEL_FABLE", "MODEL_OPUS", "MODEL_SONNET", "MODEL_HAIKU"):
         if is_retired_model_ref(normalized.get(key, "")):
             if preserve_empty_overrides:
-                normalized[key] = DEFAULT_MODEL if key == "MODEL" else ""
+                normalized[key] = RETIRED_MODEL_FALLBACK if key == "MODEL" else ""
             else:
                 normalized.pop(key)
         elif key in normalized:
