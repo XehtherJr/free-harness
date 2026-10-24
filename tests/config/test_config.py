@@ -13,6 +13,7 @@ from free_claude_code.config import loader
 from free_claude_code.config.constants import (
     ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS,
     DEFAULT_MODEL,
+    RETIRED_MODEL_FALLBACK,
 )
 from free_claude_code.config.env_files import dotenv_values_from_file
 from free_claude_code.config.loader import (
@@ -42,14 +43,17 @@ _SUPER_REF = "nvidia_nim/nvidia/nemotron-3-super-120b-a12b"
 _ULTRA_REF = "nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b"
 
 
-def test_default_claude_aliases_use_hosted_ultra():
+def test_default_claude_aliases_use_local_model_without_cloud_credentials():
     settings = compose_settings_snapshot({}, {}).settings
     router = ModelRouter(settings)
+
+    assert DEFAULT_MODEL == "ollama/qwen2.5-coder:7b"
     for tier in ("fable", "opus", "sonnet", "haiku"):
         assert (
             router.resolve(f"claude-{tier}-test").primary.provider_model_ref
-            == _ULTRA_REF
+            == DEFAULT_MODEL
         )
+        assert router.resolve(f"claude-{tier}-test").primary.provider_id == "ollama"
 
 
 @pytest.mark.parametrize("source", [ConfigSource.MANAGED, ConfigSource.PROCESS])
@@ -228,7 +232,7 @@ def test_retirement_normalizes_sources_without_resurrecting_overrides(source, ti
         retired if source is ConfigSource.MANAGED else managed,
         retired if source is ConfigSource.PROCESS else {},
     )
-    assert snapshot.settings.model == DEFAULT_MODEL
+    assert snapshot.settings.model == RETIRED_MODEL_FALLBACK
     assert getattr(snapshot.settings, f"model_{tier.lower()}") is None
     assert (
         getattr(snapshot.settings, f"reasoning_{tier.lower()}")
