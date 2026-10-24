@@ -50,56 +50,47 @@ Free-tier availability and limits are controlled by each provider and may change
 
 <a id="install"></a>
 
-### 1. Install
+### 1. Prepare a local model (no cloud API key required)
 
-macOS/Linux:
-
-```bash
-curl -fsSL "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.sh" | sh
-```
-
-Windows PowerShell:
-
-```powershell
-& ([scriptblock]::Create((irm "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.ps1")))
-```
-
-When prompted, choose at least one coding agent and optionally enable [RTK](https://github.com/rtk-ai/rtk) + [Headroom](https://github.com/headroomlabs-ai/headroom) token optimization for supported agents.
-
-### 2. Start FCC
-
-#### Windows
-
-Open **Free Claude Code** from your desktop or Start menu.
-
-#### macOS
-
-Open **Free Claude Code** from your desktop or Applications folder.
-
-#### Linux
-
-Run:
+Install [Ollama](https://ollama.com/download), then download the default coding model:
 
 ```bash
-fcc-server
+ollama pull qwen2.5-coder:7b
 ```
 
-FCC opens the Admin UI after starting. On Windows and macOS, use the tray or
-menu-bar icon to open Admin, restart, or quit. When using `fcc-server`, keep its
-terminal open.
+Make sure Ollama is running. The default FCC model is `ollama/qwen2.5-coder:7b`; NVIDIA NIM and other cloud providers are optional. Local inference uses your machine resources, and model performance depends on your hardware.
+
+### 2. Get this fork and install its dependencies
+
+```bash
+git clone https://github.com/XehtherJr/free-harness.git
+cd free-harness
+uv sync
+```
+
+Use a Python version supported by the project and the `uv` version specified in `pyproject.toml`.
+
+### 3. Start FCC
+
+From the repository directory, run:
+
+```bash
+uv run fcc-server
+```
+
+FCC opens the Admin UI after starting. Keep the terminal open while using the server. In **Model Routing**, the default model is `ollama/qwen2.5-coder:7b`; choose another provider/model in Admin whenever you have configured it.
+
+To protect the local proxy with a bearer token, enable **Proxy Authentication** in Admin.
 
 <a id="nvidia-nim-provider"></a>
 
-### 3. Configure NVIDIA NIM
+### Optional: Configure NVIDIA NIM
 
 1. Create an API key at [build.nvidia.com/settings/api-keys](https://build.nvidia.com/settings/api-keys).
-2. Open the Admin UI URL from the server log.
-3. Open NVIDIA NIM in **Providers**, click **Add key**, paste the key, and click **Save**.
-4. Leave `MODEL` on the default `nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b`, or search the model dropdown and select another model.
-5. Click **Apply** to save your model selection.
+2. Open NVIDIA NIM in **Providers**, click **Add key**, paste the key, and click **Save**.
+3. Select an NVIDIA model in **Model Routing** and click **Apply**.
 
-To protect the local proxy with a bearer token, enable **Proxy Authentication**
-in Admin.
+NVIDIA NIM remains supported, but it is no longer required for the default setup.
 
 <div align="center">
   <img src="assets/admin-page.png" alt="Free Claude Code Admin UI" width="700">
