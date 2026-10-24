@@ -50,7 +50,25 @@ Free-tier availability and limits are controlled by each provider and may change
 
 <a id="install"></a>
 
-### 1. Prepare a local model (no cloud API key required)
+### 1. Install your coding-agent clients and launchers
+
+macOS/Linux:
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.sh" | sh
+```
+
+Windows PowerShell:
+
+```powershell
+& ([scriptblock]::Create((irm "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.ps1")))
+```
+
+When prompted, choose the coding agents you use. This installer supplies the
+client launchers; the next steps run the server from this fork so the local-first
+default applies. Do not leave a separate FCC server instance running.
+
+### 2. Prepare a local model (no cloud API key required)
 
 Install [Ollama](https://ollama.com/download), then download the default coding model:
 
@@ -58,29 +76,29 @@ Install [Ollama](https://ollama.com/download), then download the default coding 
 ollama pull qwen2.5-coder:7b
 ```
 
-Make sure Ollama is running. The default FCC model is `ollama/qwen2.5-coder:7b`; NVIDIA NIM and other cloud providers are optional. Local inference uses your machine resources, and model performance depends on your hardware.
+Make sure Ollama is running. The default FCC model is `ollama/qwen2.5-coder:7b`.
+NVIDIA NIM and other cloud providers are optional. Local inference uses your
+machine's resources; performance depends on your hardware and available memory.
 
-### 2. Get this fork and install its dependencies
+### 3. Get this fork and start FCC
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed,
+then run:
 
 ```bash
 git clone https://github.com/XehtherJr/free-harness.git
 cd free-harness
 uv sync
-```
-
-Use a Python version supported by the project and the `uv` version specified in `pyproject.toml`.
-
-### 3. Start FCC
-
-From the repository directory, run:
-
-```bash
 uv run fcc-server
 ```
 
-FCC opens the Admin UI after starting. Keep the terminal open while using the server. In **Model Routing**, the default model is `ollama/qwen2.5-coder:7b`; choose another provider/model in Admin whenever you have configured it.
+FCC opens the Admin UI after starting. Keep the terminal open while using the
+server. In **Model Routing**, the default model is
+`ollama/qwen2.5-coder:7b`; choose another provider/model in Admin whenever
+you have configured it.
 
-To protect the local proxy with a bearer token, enable **Proxy Authentication** in Admin.
+To protect the local proxy with a bearer token, enable **Proxy Authentication**
+in Admin.
 
 <a id="nvidia-nim-provider"></a>
 
@@ -90,73 +108,7 @@ To protect the local proxy with a bearer token, enable **Proxy Authentication** 
 2. Open NVIDIA NIM in **Providers**, click **Add key**, paste the key, and click **Save**.
 3. Select an NVIDIA model in **Model Routing** and click **Apply**.
 
-NVIDIA NIM remains supported, but it is no longer required for the default setup.
-
-<div align="center">
-  <img src="assets/admin-page.png" alt="Free Claude Code Admin UI" width="700">
-</div>
-
-### 4. Run Your Coding Agent
-
-Claude Code:
-
-```bash
-fcc-claude
-```
-
-Codex:
-
-```bash
-fcc-codex
-```
-
-Pi:
-
-```bash
-fcc-pi
-```
-
-OpenCode 2:
-
-```bash
-fcc-opencode
-```
-
-Cline:
-
-```bash
-fcc-cline
-```
-
-Hermes:
-
-```bash
-fcc-hermes
-```
-
-DeepSeek Harness Web:
-
-```bash
-fcc-dsh
-```
-
-Grok Build:
-
-```bash
-fcc-grok
-```
-
-Muse Code:
-
-```bash
-fcc-muse
-```
-
-Aider:
-
-```bash
-fcc-aider
-```
+NVIDIA NIM remains supported; it is simply no longer required by the default setup.
 
 <a id="model-picker"></a>
 
