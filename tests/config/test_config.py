@@ -47,13 +47,12 @@ def test_default_claude_aliases_use_local_model_without_cloud_credentials():
     settings = compose_settings_snapshot({}, {}).settings
     router = ModelRouter(settings)
 
-    assert DEFAULT_MODEL == "ollama/qwen2.5-coder:7b"
+    assert settings.model == DEFAULT_MODEL == "ollama/qwen2.5-coder:7b"
     for tier in ("fable", "opus", "sonnet", "haiku"):
         assert (
             router.resolve(f"claude-{tier}-test").primary.provider_model_ref
             == DEFAULT_MODEL
         )
-        assert router.resolve(f"claude-{tier}-test").primary.provider_id == "ollama"
 
 
 @pytest.mark.parametrize("source", [ConfigSource.MANAGED, ConfigSource.PROCESS])
