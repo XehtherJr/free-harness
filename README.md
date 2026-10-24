@@ -110,6 +110,23 @@ in Admin.
 
 NVIDIA NIM remains supported; it is simply no longer required by the default setup.
 
+### 4. Run your coding agent
+
+Use the launcher for the agent you installed:
+
+| Agent | Command |
+| --- | --- |
+| Claude Code | `fcc-claude` |
+| Codex | `fcc-codex` |
+| Pi | `fcc-pi` |
+| OpenCode | `fcc-opencode` |
+| Cline | `fcc-cline` |
+| Hermes | `fcc-hermes` |
+| DeepSeek Harness Web | `fcc-dsh` |
+| Grok Build | `fcc-grok` |
+| Muse Code | `fcc-muse` |
+| Aider | `fcc-aider` |
+
 <a id="model-picker"></a>
 
 <div align="center">
