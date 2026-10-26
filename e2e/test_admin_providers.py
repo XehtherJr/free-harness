@@ -16,15 +16,13 @@ def test_retired_provider_is_absent_and_default_setup_remains_available(
     expect(page.locator('[data-provider="github_models"]')).to_have_count(0)
     expect(page.locator("#field-GITHUB_MODELS_TOKEN")).to_have_count(0)
     card = page.locator('[data-provider="nvidia_nim"]')
-    expect(card.get_by_role("button", name="Configure", exact=True)).to_have_class(
-        "primary-button"
-    )
+    expect(card.get_by_role("button", name="Configure", exact=True)).to_be_visible()
     card.locator("[data-provider-settings]").click()
     expect(page.get_by_role("button", name="Add key", exact=True)).to_be_focused()
     close_provider(page)
     page.get_by_role("button", name="Model Config", exact=True).click()
     expect(page.locator("#field-MODEL")).to_have_value(
-        "nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b"
+        "ollama/qwen2.5-coder:7b"
     )
 
 

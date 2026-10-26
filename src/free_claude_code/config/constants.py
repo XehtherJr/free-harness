@@ -1,6 +1,10 @@
 """Shared defaults used by config models and provider adapters."""
 
-DEFAULT_MODEL = "nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b"
+# Local-first default: no cloud account or API key is required.
+DEFAULT_MODEL = "ollama/qwen2.5-coder:7b"
+
+# Keep legacy retired-provider migration deterministic if DEFAULT_MODEL changes.
+RETIRED_MODEL_FALLBACK = "ollama/qwen2.5-coder:7b"
 
 # Client context allocation when the provider reports no model limit.
 DEFAULT_MODEL_CONTEXT_TOKENS = 200_000

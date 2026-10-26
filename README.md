@@ -50,7 +50,7 @@ Free-tier availability and limits are controlled by each provider and may change
 
 <a id="install"></a>
 
-### 1. Install
+### 1. Install your coding-agent clients and launchers
 
 macOS/Linux:
 
@@ -64,108 +64,68 @@ Windows PowerShell:
 & ([scriptblock]::Create((irm "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.ps1")))
 ```
 
-When prompted, choose at least one coding agent and optionally enable [RTK](https://github.com/rtk-ai/rtk) + [Headroom](https://github.com/headroomlabs-ai/headroom) token optimization for supported agents.
+When prompted, choose the coding agents you use. This installer supplies the
+client launchers; the next steps run the server from this fork so the local-first
+default applies. Do not leave a separate FCC server instance running.
 
-### 2. Start FCC
+### 2. Prepare a local model (no cloud API key required)
 
-#### Windows
-
-Open **Free Claude Code** from your desktop or Start menu.
-
-#### macOS
-
-Open **Free Claude Code** from your desktop or Applications folder.
-
-#### Linux
-
-Run:
+Install [Ollama](https://ollama.com/download), then download the default coding model:
 
 ```bash
-fcc-server
+ollama pull qwen2.5-coder:7b
 ```
 
-FCC opens the Admin UI after starting. On Windows and macOS, use the tray or
-menu-bar icon to open Admin, restart, or quit. When using `fcc-server`, keep its
-terminal open.
+Make sure Ollama is running. The default FCC model is `ollama/qwen2.5-coder:7b`.
+NVIDIA NIM and other cloud providers are optional. Local inference uses your
+machine's resources; performance depends on your hardware and available memory.
 
-<a id="nvidia-nim-provider"></a>
+### 3. Get this fork and start FCC
 
-### 3. Configure NVIDIA NIM
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed,
+then run:
 
-1. Create an API key at [build.nvidia.com/settings/api-keys](https://build.nvidia.com/settings/api-keys).
-2. Open the Admin UI URL from the server log.
-3. Open NVIDIA NIM in **Providers**, click **Add key**, paste the key, and click **Save**.
-4. Leave `MODEL` on the default `nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b`, or search the model dropdown and select another model.
-5. Click **Apply** to save your model selection.
+```bash
+git clone https://github.com/XehtherJr/free-harness.git
+cd free-harness
+uv sync
+uv run fcc-server
+```
+
+FCC opens the Admin UI after starting. Keep the terminal open while using the
+server. In **Model Routing**, the default model is
+`ollama/qwen2.5-coder:7b`; choose another provider/model in Admin whenever
+you have configured it.
 
 To protect the local proxy with a bearer token, enable **Proxy Authentication**
 in Admin.
 
-<div align="center">
-  <img src="assets/admin-page.png" alt="Free Claude Code Admin UI" width="700">
-</div>
+<a id="nvidia-nim-provider"></a>
 
-### 4. Run Your Coding Agent
+### Optional: Configure NVIDIA NIM
 
-Claude Code:
+1. Create an API key at [build.nvidia.com/settings/api-keys](https://build.nvidia.com/settings/api-keys).
+2. Open NVIDIA NIM in **Providers**, click **Add key**, paste the key, and click **Save**.
+3. Select an NVIDIA model in **Model Routing** and click **Apply**.
 
-```bash
-fcc-claude
-```
+NVIDIA NIM remains supported; it is simply no longer required by the default setup.
 
-Codex:
+### 4. Run your coding agent
 
-```bash
-fcc-codex
-```
+Use the launcher for the agent you installed:
 
-Pi:
-
-```bash
-fcc-pi
-```
-
-OpenCode 2:
-
-```bash
-fcc-opencode
-```
-
-Cline:
-
-```bash
-fcc-cline
-```
-
-Hermes:
-
-```bash
-fcc-hermes
-```
-
-DeepSeek Harness Web:
-
-```bash
-fcc-dsh
-```
-
-Grok Build:
-
-```bash
-fcc-grok
-```
-
-Muse Code:
-
-```bash
-fcc-muse
-```
-
-Aider:
-
-```bash
-fcc-aider
-```
+| Agent | Command |
+| --- | --- |
+| Claude Code | `fcc-claude` |
+| Codex | `fcc-codex` |
+| Pi | `fcc-pi` |
+| OpenCode | `fcc-opencode` |
+| Cline | `fcc-cline` |
+| Hermes | `fcc-hermes` |
+| DeepSeek Harness Web | `fcc-dsh` |
+| Grok Build | `fcc-grok` |
+| Muse Code | `fcc-muse` |
+| Aider | `fcc-aider` |
 
 <a id="model-picker"></a>
 
